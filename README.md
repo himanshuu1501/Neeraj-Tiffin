@@ -1,36 +1,135 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TiffinHub 🍱
+
+A production-ready full-stack Tiffin Delivery Platform built with Next.js 15, TypeScript, Tailwind CSS, Supabase, and Razorpay.
+
+## Features
+
+### Customer
+- Landing page with hero, featured meals, testimonials, FAQ
+- Menu browsing with search, filters, and sorting
+- Shopping cart with persistent state
+- Checkout with WhatsApp order notifications
+- Customer dashboard with order history
+- Real-time order tracking via Supabase Realtime
+- Subscription plans (weekly/monthly)
+- Razorpay payment integration
+
+### Admin
+- Dashboard with revenue and order statistics
+- Order management with status updates
+- Menu CRUD with image upload
+- Customer analytics
+- Revenue and order charts
+- Subscription management
+
+## Tech Stack
+
+- **Framework:** Next.js 15 (App Router)
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS 4, shadcn/ui
+- **Database:** Supabase (PostgreSQL)
+- **Auth:** Supabase Auth (Google + Email/Password)
+- **Storage:** Supabase Storage
+- **Payments:** Razorpay
+- **Forms:** React Hook Form + Zod
+- **Animations:** Framer Motion
+- **Charts:** Recharts
+- **State:** Zustand (cart)
 
 ## Getting Started
 
-First, run the development server:
+### 1. Install Dependencies
+
+```bash
+npm install
+```
+
+### 2. Environment Setup
+
+```bash
+cp .env.example .env.local
+```
+
+Fill in your Supabase and Razorpay credentials.
+
+### 3. Database Setup
+
+Run the SQL migrations in Supabase SQL Editor:
+- `supabase/migrations/001_initial_schema.sql`
+- `supabase/migrations/002_seed_data.sql`
+
+See [docs/SUPABASE_SETUP.md](docs/SUPABASE_SETUP.md) for detailed instructions.
+
+### 4. Run Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 5. Create Admin User
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Register via the app, then run in Supabase SQL:
 
-## Learn More
+```sql
+UPDATE profiles SET role = 'admin' WHERE email = 'your@email.com';
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Project Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+src/
+├── app/                    # Next.js App Router pages
+│   ├── admin/              # Admin dashboard pages
+│   ├── api/                # API routes (Razorpay, orders)
+│   ├── auth/               # Auth callback
+│   ├── cart/               # Shopping cart
+│   ├── checkout/           # Checkout flow
+│   ├── dashboard/          # Customer dashboard
+│   ├── login/              # Authentication
+│   ├── menu/               # Menu browsing
+│   ├── orders/             # Order history & tracking
+│   ├── payment/            # Razorpay payment
+│   └── subscriptions/      # Subscription plans
+├── components/
+│   ├── admin/              # Admin components
+│   ├── landing/            # Landing page sections
+│   ├── layout/             # Header, footer
+│   ├── menu/               # Menu cards
+│   ├── orders/             # Order tracking
+│   ├── providers/          # Theme, toast providers
+│   └── ui/                 # shadcn/ui components
+├── hooks/                  # Custom hooks (cart)
+├── lib/
+│   ├── actions/            # Server actions
+│   ├── supabase/           # Supabase clients
+│   └── validations/        # Zod schemas
+├── types/                  # TypeScript types
+└── middleware.ts           # Auth middleware
+supabase/
+└── migrations/             # SQL schema & seed data
+docs/                       # Setup guides
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Documentation
 
-## Deploy on Vercel
+- [Supabase Setup](docs/SUPABASE_SETUP.md)
+- [Razorpay Setup](docs/RAZORPAY_SETUP.md)
+- [Vercel Deployment](docs/VERCEL_DEPLOYMENT.md)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Environment Variables
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Variable | Description |
+|----------|-------------|
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anonymous key |
+| `NEXT_PUBLIC_APP_URL` | Application URL |
+| `NEXT_PUBLIC_WHATSAPP_OWNER_PHONE` | Owner WhatsApp number |
+| `NEXT_PUBLIC_RAZORPAY_KEY_ID` | Razorpay public key |
+| `RAZORPAY_KEY_ID` | Razorpay key ID |
+| `RAZORPAY_KEY_SECRET` | Razorpay secret key |
+
+## License
+
+MIT
